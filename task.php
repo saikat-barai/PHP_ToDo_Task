@@ -103,7 +103,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Task List -->
             <h2>Task List</h2>
             <ul style="list-style: none; padding: 0;">
-                
+            <?php if(empty($tasks)): ?>
+                     <li>No tasks yet. Add one above!</li>
+                    <!-- if there are tasks, display each task with a toggle and delete option -->
+                 <?php else: ?>
+                    <?php foreach($tasks as $index => $task): ?>
+                        <li class="task-item">
+                            <form method="POST" style="flex-grow: 1;">
+                                <input type="hidden" name="toggle" value="<?= $index ?>">
+                           
+                            <button type="submit" style="border: none; background: none; cursor: pointer; text-align: left; width: 100%;">
+                        <span class="task <?= $task['done'] ? 'task-done' : '' ?>">
+                            <?= htmlspecialchars($task['task']) ?>
+                        </span>
+                    </button>
+                     </form>
+
+                     <form method="POST">
+                <input type="hidden" name="delete" value="<?= $index ?>">
+                <button type="submit" class="button button-outline" style="margin-left: 10px;">Delete</button>
+                     </form>
+                        </li>
+
+                        <?php endforeach; ?>
+                 <?php endif; ?>
             </ul>
 
         </div>
