@@ -1,5 +1,39 @@
 <?php
 
+// define a constant for the tasks file path
+define("TASKS_FILE", "tasks.json");
+
+// create a function to load task fron tasks.json file 
+function loadTasks(): array {
+    if(!file_exists(TASKS_FILE)){
+        return [];
+    }
+
+    $data = file_get_contents(TASKS_FILE);
+
+    return $data ? json_decode($data, true) : [];
+}
+
+$tasks = loadTasks();
+
+// create a function to save taskes to the tasks.json file
+function saveTasks(array $tasks): void {
+    file_put_contents(TASKS_FILE, json_encode($tasks, JSON_PRETTY_PRINT));
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['task']) && !empty(trim($_POST['task']))) {
+    //    add task 
+        $tasks[] = [
+            'task' => htmlspecialchars(trim($_POST['task'])),
+            'done' => false
+        ];
+        saveTasks($tasks);
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
