@@ -33,6 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ' . $_SERVER['PHP_SELF']);
         exit;
     }
+    elseif (isset($_POST['delete'])) {
+        // delete task
+        unset($tasks[$_POST['delete']]);
+        $tasks = array_values($tasks);
+        saveTasks($tasks);
+        header('Location:'. $_SERVER['PHP_SELF']);
+        exit;
+    }
 }
 ?>
 
